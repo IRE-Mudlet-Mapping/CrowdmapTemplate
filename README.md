@@ -1,4 +1,4 @@
-# Template repository for Mudlet corwdmaps using the IRE mapper #
+# Template repository for Mudlet crowdmaps using the IRE mapper #
 
 You can use this template repository to easily set up a crowdmap repository
 for the IRE mapper. The map contains the basic setup for a page, you'll just
@@ -9,7 +9,7 @@ want to configure the `Pages` setting of the repository to deploy from the
 
 Additionally, there are a few basic workflows set up that help maintaining
 the maps. To use the map diff workflow, you need a free account at
-(cloudinary)[https://cloudinary.com/]. The product you need is called
+[cloudinary](https://cloudinary.com/). The product you need is called
 `Programmable Media`. It is a service that lets you programmatically upload
 images and embed them. The free tier should be more than
 enough for a community project. After signing up, create the repository secrets
@@ -26,4 +26,4 @@ content. Have a lok at this project's wiki for how the IRE games organize their
 work.
 
 If you need help or have suggestions, hop by in our
-(Discord)[https://discord.gg/PPUNnc3].
+[Discord](https://discord.gg/PPUNnc3).
