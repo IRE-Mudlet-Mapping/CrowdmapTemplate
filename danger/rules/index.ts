@@ -1,3 +1,4 @@
 export * from "./UpdateVersionFile"
-export * from "./UpdateJsonMapFile"
 export * from "./UpdateChangelog"
+export * from "./UpdateMainMapFile"
+export * from "./CorrectBranch"
