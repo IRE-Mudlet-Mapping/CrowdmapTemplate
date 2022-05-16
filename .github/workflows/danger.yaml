@@ -14,7 +14,7 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v3.2.0
       with:
-        node-version: "12.x"
+         node-version: current
     - name: Install yarn dependencies
       run: |
         yarn install --frozen-lockfile
