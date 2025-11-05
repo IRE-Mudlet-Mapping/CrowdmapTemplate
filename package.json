@@ -9,5 +9,8 @@
     "mudlet-map-binary-reader": "^0.6.0",
     "typescript": "^5.9.3",
     "yargs": "^18.0.0"
+  },
+  "resolutions": {
+    "jwa": "^1.4.2"
   }
 }
