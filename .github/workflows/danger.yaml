@@ -2,19 +2,19 @@ name: DangerJS
 
 on: pull_request_target
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   danger:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
       with:
-        ref: ${{github.event.pull_request.head.ref}}
-        repository: ${{github.event.pull_request.head.repo.full_name}}
-        fetch-depth: 0
+        fetch-depth: 1
     - name: Use Node.js
       uses: actions/setup-node@v6.2.0
-      with:
-         node-version: current
     - name: Install yarn dependencies
       run: |
         yarn install --frozen-lockfile
