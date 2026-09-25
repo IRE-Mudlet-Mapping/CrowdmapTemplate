@@ -2,40 +2,59 @@ name: JSON diff
 
 on: pull_request_target
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   json-diff:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout current version
-        uses: actions/checkout@v6
+      - name: Checkout base version
+        uses: actions/checkout@v7
         with:
-          ref: ${{github.event.pull_request.head.ref}}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          fetch-depth: 0
-          path: current
-      - name: Checkout old version
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-          repository: ${{ github.event.pull_request.base.repo.full_name }}
           fetch-depth: 0
           path: old
+      - name: Check whether a map is available
+        id: map-available
+        run: |
+          if [ -s old/Map/map ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "No map is available in the repository template; skipping the JSON diff."
+          fi
+      - name: Checkout base again for PR overlay
+        if: steps.map-available.outputs.available == 'true'
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          path: current
+      - name: Fetch PR changes into current
+        if: steps.map-available.outputs.available == 'true'
+        working-directory: current
+        run: |
+          git fetch origin pull/${{ github.event.pull_request.number }}/head:pr-head
+          git checkout pr-head
 
-
-      - uses: actions/setup-node@v6.2.0
+      - uses: actions/setup-node@v7.0.0
+        if: steps.map-available.outputs.available == 'true'
       - name: Install dependencies
+        if: steps.map-available.outputs.available == 'true'
         run: |
           sudo apt-get install jq diffutils
 
-
       - name: Generate json map files for diffing
+        if: steps.map-available.outputs.available == 'true'
         run: |
           pushd old/
           yarn install --frozen-lockfile
-          node ./map-utilities/generate-map.js
-          node ./map-utilities/generate-map.js --base-dir ../current
+          node ./map-utilities/generate-map.mjs
+          node ./map-utilities/generate-map.mjs --base-dir ../current
           popd
       - name: get JSON diff
+        if: steps.map-available.outputs.available == 'true'
         run: |
           echo '## Textual map diff' > output.txt
           echo '<details>' >> output.txt
@@ -48,6 +67,7 @@ jobs:
           echo '</details>' >> output.txt
 
       - name: Find Comment
+        if: steps.map-available.outputs.available == 'true'
         uses: peter-evans/find-comment@v4
         id: fc
         with:
@@ -55,7 +75,8 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: Textual map diff
       - name: Create or update comment
-        uses: actions/github-script@v8
+        if: steps.map-available.outputs.available == 'true'
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
