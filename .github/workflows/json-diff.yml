@@ -38,7 +38,7 @@ jobs:
           git fetch origin pull/${{ github.event.pull_request.number }}/head:pr-head
           git checkout pr-head
 
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         if: steps.map-available.outputs.available == 'true'
       - name: Install dependencies
         if: steps.map-available.outputs.available == 'true'

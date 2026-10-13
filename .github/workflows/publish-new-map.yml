@@ -19,7 +19,7 @@ jobs:
           echo "available=false" >> "$GITHUB_OUTPUT"
           echo "No map is available in the repository template; skipping publication."
         fi
-    - uses: actions/setup-node@v7.0.0
+    - uses: actions/setup-node@v7.1.0
       if: steps.map-available.outputs.available == 'true'
     - name: Generate map data compatible with map reader as well as json files
       if: steps.map-available.outputs.available == 'true'
